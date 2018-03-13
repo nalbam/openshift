@@ -1,7 +1,5 @@
 #!/bin/bash
 
-export SHELL_DIR=$(dirname "$0")
-
 export DOMAIN=${DOMAIN:="$(curl ipinfo.io/ip).nip.io"}
 export USERNAME=${USERNAME:=root}
 export PASSWORD=${PASSWORD:=password}
@@ -98,11 +96,15 @@ build_config() {
 }
 
 build_hosts() {
-    envsubst < ${SHELL_DIR}/hosts > /etc/hosts
+    curl -s -o /tmp/hosts https://gitlab.com/nalbam/openshift/raw/master/hosts
+
+    envsubst < /tmp/hosts > /etc/hosts
 }
 
 build_inventory() {
-    envsubst < ${SHELL_DIR}/inventory > inventory.ini
+    curl -s -o /tmp/hosts https://gitlab.com/nalbam/openshift/raw/master/inventory
+
+    envsubst < /tmp/inventory > inventory.ini
 
     if [ ! -f inventory.ini ]; then
         echo "inventory.ini is missing!"
