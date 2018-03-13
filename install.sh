@@ -102,7 +102,7 @@ build_hosts() {
 }
 
 build_inventory() {
-    curl -s -o /tmp/hosts https://gitlab.com/nalbam/openshift/raw/master/inventory
+    curl -s -o /tmp/inventory https://gitlab.com/nalbam/openshift/raw/master/inventory
 
     envsubst < /tmp/inventory > inventory.ini
 
