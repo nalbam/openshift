@@ -2,8 +2,6 @@
 
 ## install
 ```
-ssh -i key.pem ec2-user@openshift.local
-
 curl -s https://gitlab.com/nalbam/openshift/raw/master/install.sh | sudo bash
 ```
 
