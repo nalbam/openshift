@@ -98,7 +98,7 @@ start_docker() {
 
 build_ssh() {
     if [ ! -f ~/.ssh/id_rsa ]; then
-        curl -s https://gitlab.com/nalbam/openshift/raw/master/install.sh | sudo bash
+        curl -s https://gitlab.com/nalbam/openshift/raw/master/ssh-keygen.sh | sudo bash
 
         if [ "${USERNAME}" != "root" ]; then
           sudo cp -rf /root/.ssh/id_rsa ~/.ssh/id_rsa
