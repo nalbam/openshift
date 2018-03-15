@@ -5,7 +5,7 @@
 export DOMAIN=nalbam.com
 export DISK=/dev/sdf
 
-curl -s https://gitlab.com/nalbam/openshift/raw/master/install.sh | sudo bash
+curl -s https://gitlab.com/nalbam/openshift/raw/master/install.sh | bash
 ```
 
 ## reference
@@ -18,4 +18,3 @@ curl -s https://gitlab.com/nalbam/openshift/raw/master/install.sh | sudo bash
 
 ## pipeline
 * https://github.com/openshift/origin/tree/master/examples/jenkins/pipeline
-* https://github.com/appuio/advanced-openshift-pipeline-example

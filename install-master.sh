@@ -1,17 +1,18 @@
 #!/bin/bash
 
-#sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+export USERNAME=${USERNAME:=$(whoami)}
 
-sudo yum-config-manager --enable epel
-sudo yum install -y git nano wget zip zile net-tools docker \
-    python-cryptography python-passlib python-devel python-pip pyOpenSSL.x86_64 \
-    openssl-devel httpd-tools java-1.8.0-openjdk-headless NetworkManager \
-    "@Development Tools"
+# for docker
+sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
 
-#if ! command -v docker > /dev/null; then
-#    sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
-#    sudo yum install -y docker
-#fi
+# for python2-pip, zile
+sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+sudo yum update -y
+sudo yum install -y git nano wget zip zile gettext net-tools libffi-devel docker \
+                    python-cryptography python-passlib python-devel python-pip pyOpenSSL.x86_64 \
+                    openssl-devel httpd-tools java-1.8.0-openjdk-headless NetworkManager \
+                    "@Development Tools"
 
 sudo systemctl | grep "NetworkManager.*running"
 if [ $? -eq 1 ]; then
@@ -21,3 +22,8 @@ fi
 
 sudo systemctl start docker
 sudo systemctl enable docker
+
+if [ "${USERNAME}" != "root" ]; then
+  sudo groupadd docker
+  sudo usermod -aG docker ${USERNAME}
+fi
