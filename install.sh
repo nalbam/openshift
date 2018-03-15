@@ -8,8 +8,6 @@ export DISK=${DISK:=""}
 
 export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
 
-#export REPO_URL="http://repo.toast.sh/openshift"
-
 export METRICS="True"
 export LOGGING="True"
 
@@ -104,7 +102,7 @@ build_ssh() {
           sudo cp -rf /root/.ssh/id_rsa ~/.ssh/id_rsa
           sudo cp -rf /root/.ssh/id_rsa.pub ~/.ssh/id_rsa.pub
 
-          sudo chown ${USERNAME}.${USERNAME} *
+          sudo chown ${USERNAME}.${USERNAME} ~/.ssh/*
 
           cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
         fi
