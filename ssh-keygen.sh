@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export USERNAME=${USERNAME:=$(whoami)}
+export USER=${USER:=$(whoami)}
 
 export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
 
@@ -14,4 +14,4 @@ if [ ! -f ~/.ssh/id_rsa ]; then
   cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 fi
 
-ssh -o StrictHostKeyChecking=no ${USERNAME}@${IP} "pwd" < /dev/null
+ssh -o StrictHostKeyChecking=no ${USER}@${IP} "pwd" < /dev/null

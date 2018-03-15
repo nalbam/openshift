@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export USERNAME=${USERNAME:=$(whoami)}
+export USER=${USER:=$(whoami)}
 
 install_dependency() {
     sudo yum repolist | grep rhui-REGION-rhel-server-extras
@@ -29,9 +29,9 @@ start_service() {
         sudo systemctl enable NetworkManager
     fi
 
-    if [ "${USERNAME}" != "root" ]; then
+    if [ "${USER}" != "root" ]; then
       sudo groupadd docker
-      sudo usermod -aG docker ${USERNAME}
+      sudo usermod -aG docker ${USER}
     fi
 
     sudo systemctl restart docker

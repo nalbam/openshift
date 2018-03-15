@@ -1,7 +1,9 @@
 #!/bin/bash
 
+export USER=${USER:=$(whoami)}
+
 export DOMAIN=${DOMAIN:="$(curl -s ipinfo.io/ip).nip.io"}
-export USERNAME=${USERNAME:=$(whoami)}
+export USERNAME=${USERNAME:=admin}
 export PASSWORD=${PASSWORD:=password}
 export VERSION=${VERSION:="v3.7.1"}
 export DISK=${DISK:=""}
@@ -85,9 +87,9 @@ start_service() {
         sudo docker-storage-setup
     fi
 
-    if [ "${USERNAME}" != "root" ]; then
+    if [ "${USER}" != "root" ]; then
       sudo groupadd docker
-      sudo usermod -aG docker ${USERNAME}
+      sudo usermod -aG docker ${USER}
     fi
 
     sudo systemctl restart docker
@@ -98,12 +100,12 @@ build_ssh() {
     if [ ! -f ~/.ssh/id_rsa ]; then
         curl -s https://gitlab.com/nalbam/openshift/raw/master/ssh-keygen.sh | sudo bash
 
-        if [ "${USERNAME}" != "root" ]; then
+        if [ "${USER}" != "root" ]; then
           sudo cp -rf /root/.ssh/config ~/.ssh/config
           sudo cp -rf /root/.ssh/id_rsa ~/.ssh/id_rsa
           sudo cp -rf /root/.ssh/id_rsa.pub ~/.ssh/id_rsa.pub
 
-          sudo chown ${USERNAME}.${USERNAME} ~/.ssh/*
+          sudo chown ${USER}.${USER} ~/.ssh/*
 
           cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
         fi
