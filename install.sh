@@ -54,8 +54,6 @@ install_ansible() {
 }
 
 install_openshift() {
-    build_inventory
-
     sudo ansible-playbook -i inventory.ini openshift-ansible/playbooks/byo/config.yml
 
     sudo htpasswd -b /etc/origin/master/htpasswd ${USERNAME} ${PASSWORD}
@@ -92,7 +90,7 @@ start_docker() {
     sudo systemctl enable docker
 }
 
-build_config() {
+build_ssh() {
     if [ ! -f ~/.ssh/id_rsa ]; then
         ssh-keygen -q -f ~/.ssh/id_rsa -N ""
         cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
@@ -128,9 +126,11 @@ install_dependency
 
 install_ansible
 
-build_config
+build_ssh
 
 build_hosts
+
+build_inventory
 
 start_docker
 
