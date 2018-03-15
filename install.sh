@@ -24,11 +24,17 @@ if [ "$MEMORY" -lt "8388608" ]; then
 fi
 
 install_dependency() {
-    # for docker
-    sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
+    sudo yum repolist | grep rhui-REGION-rhel-server-extras
+    if [ $? -eq 1 ]; then
+      # for docker
+      sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
+    fi
 
-    # for python2-pip, zile
-    sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    sudo yum repolist | grep epel
+    if [ $? -eq 1 ]; then
+      # for python2-pip, zile
+      sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+    fi
 
     sudo yum update -y
     sudo yum install -y git nano wget zip zile gettext net-tools libffi-devel docker \
