@@ -117,8 +117,8 @@ build_hosts() {
 }
 
 build_inventory() {
-    curl -s -o /tmp/inventory https://gitlab.com/nalbam/openshift/raw/master/inventory
-    envsubst < /tmp/inventory > inventory.ini
+    curl -s -o /tmp/inventory.tmp https://gitlab.com/nalbam/openshift/raw/master/inventory
+    envsubst < /tmp/inventory.tmp > inventory.ini
 
     if [ ! -f inventory.ini ]; then
         echo "inventory.ini is missing!"
