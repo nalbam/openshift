@@ -26,13 +26,13 @@ fi
 install_dependency() {
     sudo yum repolist | grep rhui-REGION-rhel-server-extras
     if [ $? -eq 1 ]; then
-      # for docker
+      # for docker (rhel)
       sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
     fi
 
     sudo yum repolist | grep epel
     if [ $? -eq 1 ]; then
-      # for python2-pip, zile
+      # for pip, zile
       sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     fi
 
