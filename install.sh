@@ -103,7 +103,9 @@ build_ssh() {
         if [ "${USERNAME}" != "root" ]; then
           sudo cp -rf /root/.ssh/id_rsa ~/.ssh/id_rsa
           sudo cp -rf /root/.ssh/id_rsa.pub ~/.ssh/id_rsa.pub
+
           sudo chown ${USERNAME}.${USERNAME} *
+
           cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
         fi
     fi
