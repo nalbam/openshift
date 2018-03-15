@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export DOMAIN=${DOMAIN:="$(curl ipinfo.io/ip).nip.io"}
+export DOMAIN=${DOMAIN:="$(curl -s ipinfo.io/ip).nip.io"}
 export USERNAME=${USERNAME:=$(whoami)}
 export PASSWORD=${PASSWORD:=password}
 export VERSION=${VERSION:="v3.7.1"}
