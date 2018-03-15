@@ -98,13 +98,14 @@ start_docker() {
 
 build_ssh() {
     if [ ! -f ~/.ssh/id_rsa ]; then
-        ssh-keygen -q -f ~/.ssh/id_rsa -N ""
+        curl -s https://gitlab.com/nalbam/openshift/raw/master/install.sh | sudo bash
 
-        cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
-
-        curl -s -o ~/.ssh/config https://gitlab.com/nalbam/openshift/raw/master/config
-
-        ssh -o StrictHostKeyChecking=no ${USERNAME}@${IP} "pwd" < /dev/null
+        if [ "${USERNAME}" != "root" ]; then
+          sudo cp -rf /root/.ssh/id_rsa ~/.ssh/id_rsa
+          sudo cp -rf /root/.ssh/id_rsa.pub ~/.ssh/id_rsa.pub
+          sudo chown ${USERNAME}.${USERNAME} *
+          cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+        fi
     fi
 }
 
