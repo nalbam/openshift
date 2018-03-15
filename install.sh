@@ -39,12 +39,6 @@ install_dependency() {
                         python-cryptography python-passlib python-devel python-pip pyOpenSSL.x86_64 \
                         openssl-devel httpd-tools java-1.8.0-openjdk-headless NetworkManager \
                         "@Development Tools"
-
-    sudo systemctl | grep "NetworkManager.*running"
-    if [ $? -eq 1 ]; then
-        sudo systemctl start NetworkManager
-        sudo systemctl enable NetworkManager
-    fi
 }
 
 install_ansible() {
@@ -67,7 +61,13 @@ install_openshift() {
     sudo systemctl restart origin-master-api
 }
 
-start_docker() {
+start_service() {
+    sudo systemctl | grep "NetworkManager.*running"
+    if [ $? -eq 1 ]; then
+        sudo systemctl start NetworkManager
+        sudo systemctl enable NetworkManager
+    fi
+
     if [ -z ${DISK} ]; then
         echo "Not setting the Docker storage."
     else
@@ -144,7 +144,7 @@ build_hosts
 
 build_inventory
 
-start_docker
+start_service
 
 install_openshift
 
