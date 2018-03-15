@@ -99,6 +99,7 @@ build_ssh() {
         curl -s https://gitlab.com/nalbam/openshift/raw/master/ssh-keygen.sh | sudo bash
 
         if [ "${USERNAME}" != "root" ]; then
+          sudo cp -rf /root/.ssh/config ~/.ssh/config
           sudo cp -rf /root/.ssh/id_rsa ~/.ssh/id_rsa
           sudo cp -rf /root/.ssh/id_rsa.pub ~/.ssh/id_rsa.pub
 
