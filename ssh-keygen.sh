@@ -4,7 +4,7 @@ export USERNAME=${USERNAME:=$(whoami)}
 
 export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
 
-if [ ~ -f ~/.ssh/config ]; then
+if [ ! -f ~/.ssh/config ]; then
   echo "Host * " >> ~/.ssh/config
   echo "    StrictHostKeyChecking no " >> ~/.ssh/config
 fi
