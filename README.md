@@ -8,6 +8,11 @@ export DISK=/dev/sdf
 curl -s https://gitlab.com/nalbam/openshift/raw/master/install.sh | bash
 ```
 
+## minishift
+```
+minishift start --vm-driver=virtualbox
+```
+
 ## reference
 * https://github.com/dwmkerr/terraform-aws-openshift/
 
