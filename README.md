@@ -5,7 +5,7 @@
 export DOMAIN=nalbam.com
 export DISK=/dev/sdf
 
-curl -s https://gitlab.com/nalbam/openshift/raw/master/install.sh | bash
+curl -s https://raw.githubusercontent.com/nalbam/openshift/master/install.sh | bash
 ```
 
 ## minishift
