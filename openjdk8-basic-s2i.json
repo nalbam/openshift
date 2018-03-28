@@ -36,13 +36,6 @@
             "required": false
         },
         {
-            "description": "Target port for traffic.",
-            "displayName": "Target Port",
-            "name": "TARGET_PORT",
-            "value": "8080",
-            "required": true
-        },
-        {
             "description": "Git source URI for application",
             "displayName": "Git Repository URL",
             "name": "SOURCE_REPOSITORY_URL",
@@ -94,8 +87,8 @@
             "spec": {
                 "ports": [
                     {
-                        "port": "${TARGET_PORT}",
-                        "targetPort": "${TARGET_PORT}"
+                        "port": 8080,
+                        "targetPort": 8080
                     }
                 ],
                 "selector": {
