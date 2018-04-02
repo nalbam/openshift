@@ -3,8 +3,8 @@
 export USER=${USER:=$(whoami)}
 
 export DOMAIN=${DOMAIN:="$(curl -s ipinfo.io/ip).nip.io"}
-export USERNAME=${USERNAME:=admin}
-export PASSWORD=${PASSWORD:=password}
+export USERNAME=${USERNAME:="${USER}"}
+export PASSWORD=${PASSWORD:="password"}
 export VERSION=${VERSION:="v3.7.2"}
 export DISK=${DISK:=""}
 
