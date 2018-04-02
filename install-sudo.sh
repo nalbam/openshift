@@ -24,27 +24,27 @@ if [ "$MEMORY" -lt "8388608" ]; then
 fi
 
 install_dependency() {
-    yum repolist | grep rhui-REGION-rhel-server-extras
+    sudo yum repolist | grep rhui-REGION-rhel-server-extras
     if [ $? -eq 1 ]; then
         # for docker (rhel)
-        yum-config-manager --enable rhui-REGION-rhel-server-extras
+        sudo yum-config-manager --enable rhui-REGION-rhel-server-extras
     fi
 
-    yum repolist | grep epel
+    sudo yum repolist | grep epel
     if [ $? -eq 1 ]; then
         # for pip, zile
-        rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+        sudo rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
     fi
 
-    yum update -y
-    yum install -y git nano wget zip zile gettext net-tools libffi-devel docker \
-                   python-cryptography python-passlib python-devel python-pip pyOpenSSL.x86_64 \
-                   openssl-devel httpd-tools java-1.8.0-openjdk-headless NetworkManager \
-                   "@Development Tools"
+    sudo yum update -y
+    sudo yum install -y git nano wget zip zile gettext net-tools libffi-devel docker \
+                        python-cryptography python-passlib python-devel python-pip pyOpenSSL.x86_64 \
+                        openssl-devel httpd-tools java-1.8.0-openjdk-headless NetworkManager \
+                        "@Development Tools"
 }
 
 install_ansible() {
-    which ansible || pip install -Iv ansible
+    which ansible || sudo pip install -Iv ansible
 
     [ ! -d openshift-ansible ] && git clone https://github.com/openshift/openshift-ansible.git
 
@@ -54,46 +54,46 @@ install_ansible() {
 }
 
 install_openshift() {
-    ansible-playbook -i inventory.ini openshift-ansible/playbooks/byo/config.yml
+    sudo ansible-playbook -i inventory.ini openshift-ansible/playbooks/byo/config.yml
 
-    htpasswd -b /etc/origin/master/htpasswd ${USERNAME} ${PASSWORD}
+    sudo htpasswd -b /etc/origin/master/htpasswd ${USERNAME} ${PASSWORD}
 
     oc adm policy add-cluster-role-to-user cluster-admin ${USERNAME}
 
-    systemctl restart origin-master-api
+    sudo systemctl restart origin-master-api
 }
 
 start_service() {
-    systemctl | grep "NetworkManager.*running"
+    sudo systemctl | grep "NetworkManager.*running"
     if [ $? -eq 1 ]; then
-        systemctl start NetworkManager
-        systemctl enable NetworkManager
+        sudo systemctl start NetworkManager
+        sudo systemctl enable NetworkManager
     fi
 
     if [ -z ${DISK} ]; then
         echo "Not setting the Docker storage."
     else
-        cp /etc/sysconfig/docker-storage-setup /etc/sysconfig/docker-storage-setup.bk
+        sudo cp /etc/sysconfig/docker-storage-setup /etc/sysconfig/docker-storage-setup.bk
 
-        echo DEVS=${DISK} > /etc/sysconfig/docker-storage-setup
-        echo VG=DOCKER >> /etc/sysconfig/docker-storage-setup
-        echo SETUP_LVM_THIN_POOL=yes >> /etc/sysconfig/docker-storage-setup
-        echo DATA_SIZE="100%FREE" >> /etc/sysconfig/docker-storage-setup
+        sudo echo DEVS=${DISK} > /etc/sysconfig/docker-storage-setup
+        sudo echo VG=DOCKER >> /etc/sysconfig/docker-storage-setup
+        sudo echo SETUP_LVM_THIN_POOL=yes >> /etc/sysconfig/docker-storage-setup
+        sudo echo DATA_SIZE="100%FREE" >> /etc/sysconfig/docker-storage-setup
 
-        systemctl stop docker
+        sudo systemctl stop docker
 
-        rm -rf /var/lib/docker
-        wipefs --all ${DISK}
-        docker-storage-setup
+        sudo rm -rf /var/lib/docker
+        sudo wipefs --all ${DISK}
+        sudo docker-storage-setup
     fi
 
     if [ "${USER}" != "root" ]; then
-      groupadd docker
-      usermod -aG docker ${USER}
+      sudo groupadd docker
+      sudo usermod -aG docker ${USER}
     fi
 
-    systemctl restart docker
-    systemctl enable docker
+    sudo systemctl restart docker
+    sudo systemctl enable docker
 }
 
 build_ssh() {
@@ -102,20 +102,20 @@ build_ssh() {
 
         if [ "${USER}" != "root" ]; then
             if [ ! -f /tmp/authorized_keys ]; then
-                mkdir -p /root/.aws
-                mkdir -p /root/.ssh
+                sudo mkdir -p /root/.aws
+                sudo mkdir -p /root/.ssh
 
-                cp -rf ~/.ssh/config /root/.ssh/config
-                cp -rf ~/.ssh/id_rsa /root/.ssh/id_rsa
-                cp -rf ~/.ssh/id_rsa.pub  /root/.ssh/id_rsa.pub
+                sudo cp -rf ~/.ssh/config /root/.ssh/config
+                sudo cp -rf ~/.ssh/id_rsa /root/.ssh/id_rsa
+                sudo cp -rf ~/.ssh/id_rsa.pub  /root/.ssh/id_rsa.pub
 
-                cat /root/.ssh/authorized_keys > /tmp/authorized_keys
-                cat /root/.ssh/id_rsa.pub >> /tmp/authorized_keys
+                sudo cat /root/.ssh/authorized_keys > /tmp/authorized_keys
+                sudo cat /root/.ssh/id_rsa.pub >> /tmp/authorized_keys
 
-                cp -rf /tmp/authorized_keys /root/.ssh/authorized_keys
+                sudo cp -rf /tmp/authorized_keys /root/.ssh/authorized_keys
 
-                chmod 600 /root/.ssh/authorized_keys
-                chmod 600 /root/.ssh/config
+                sudo chmod 600 /root/.ssh/authorized_keys
+                sudo chmod 600 /root/.ssh/config
             fi
         fi
     fi
@@ -124,7 +124,7 @@ build_ssh() {
 build_hosts() {
     curl -s -o /tmp/hosts.tmp https://raw.githubusercontent.com/nalbam/openshift/master/hosts
     envsubst < /tmp/hosts.tmp > /tmp/hosts
-    cp -rf /tmp/hosts /etc/hosts
+    sudo cp -rf /tmp/hosts /etc/hosts
 }
 
 build_inventory() {
