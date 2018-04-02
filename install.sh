@@ -113,6 +113,9 @@ build_ssh() {
                 sudo cat /root/.ssh/id_rsa.pub >> /tmp/authorized_keys
 
                 sudo cp -rf /tmp/authorized_keys /root/.ssh/authorized_keys
+
+                sudo chmod 600 /root/.ssh/authorized_keys
+                sudo chmod 600 /root/.ssh/config
             fi
         fi
     fi
