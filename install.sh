@@ -149,9 +149,9 @@ install_dependency
 
 install_ansible
 
-build_ssh
-
 build_hosts
+
+build_ssh
 
 build_inventory
 
