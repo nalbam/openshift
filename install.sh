@@ -101,7 +101,7 @@ build_ssh() {
         curl -s https://raw.githubusercontent.com/nalbam/openshift/master/ssh-keygen.sh | bash
 
         if [ "${USER}" != "root" ]; then
-            if [ -f ~/.ssh/config ]; then
+            if [ ! -f /tmp/authorized_keys ]; then
                 sudo mkdir -p /root/.aws
                 sudo mkdir -p /root/.ssh
 
