@@ -101,13 +101,16 @@ build_ssh() {
         curl -s https://raw.githubusercontent.com/nalbam/openshift/master/ssh-keygen.sh | sudo bash
 
         if [ "${USER}" != "root" ]; then
-          sudo cp -rf /root/.ssh/config ~/.ssh/config
-          sudo cp -rf /root/.ssh/id_rsa ~/.ssh/id_rsa
-          sudo cp -rf /root/.ssh/id_rsa.pub ~/.ssh/id_rsa.pub
+            mkdir -p ~/.aws
+            mkdir -p ~/.ssh
 
-          sudo chown ${USER}.${USER} ~/.ssh/*
+            sudo cp -rf /root/.ssh/config ~/.ssh/config
+            sudo cp -rf /root/.ssh/id_rsa ~/.ssh/id_rsa
+            sudo cp -rf /root/.ssh/id_rsa.pub ~/.ssh/id_rsa.pub
 
-          cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+            sudo chown ${USER}.${USER} ~/.ssh/*
+
+            cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
         fi
     fi
 }
