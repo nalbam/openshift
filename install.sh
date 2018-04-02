@@ -98,19 +98,19 @@ start_service() {
 
 build_ssh() {
     if [ ! -f ~/.ssh/id_rsa ]; then
-        curl -s https://raw.githubusercontent.com/nalbam/openshift/master/ssh-keygen.sh | sudo bash
+        curl -s https://raw.githubusercontent.com/nalbam/openshift/master/ssh-keygen.sh | bash
 
         if [ "${USER}" != "root" ]; then
-            mkdir -p ~/.aws
-            mkdir -p ~/.ssh
+            if [ -f ~/.ssh/config ]; then
+                sudo mkdir -p /root/.aws
+                sudo mkdir -p /root/.ssh
 
-            sudo cp -rf /root/.ssh/config ~/.ssh/config
-            sudo cp -rf /root/.ssh/id_rsa ~/.ssh/id_rsa
-            sudo cp -rf /root/.ssh/id_rsa.pub ~/.ssh/id_rsa.pub
+                sudo cp -rf ~/.ssh/config /root/.ssh/config
+                sudo cp -rf ~/.ssh/id_rsa /root/.ssh/id_rsa
+                sudo cp -rf ~/.ssh/id_rsa.pub  /root/.ssh/id_rsa.pub
 
-            sudo chown ${USER}.${USER} ~/.ssh/*
-
-            cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+                sudo cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+            fi
         fi
     fi
 }
