@@ -4,6 +4,9 @@ export USER=${USER:=$(whoami)}
 
 export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
 
+mkdir -p ~/.aws
+mkdir -p ~/.ssh
+
 if [ ! -f ~/.ssh/config ]; then
   echo "Host * " >> ~/.ssh/config
   echo "    StrictHostKeyChecking no " >> ~/.ssh/config
