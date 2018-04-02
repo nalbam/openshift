@@ -2,13 +2,13 @@
 
 export USER=${USER:=$(whoami)}
 
+export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
+
 export DOMAIN=${DOMAIN:="$(curl -s ipinfo.io/ip).nip.io"}
 export USERNAME=${USERNAME:="${USER}"}
 export PASSWORD=${PASSWORD:="password"}
 export VERSION=${VERSION:="v3.7.2"}
 export DISK=${DISK:=""}
-
-export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
 
 export METRICS="True"
 export LOGGING="True"
