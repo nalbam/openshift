@@ -109,7 +109,10 @@ build_ssh() {
                 sudo cp -rf ~/.ssh/id_rsa /root/.ssh/id_rsa
                 sudo cp -rf ~/.ssh/id_rsa.pub  /root/.ssh/id_rsa.pub
 
-                sudo cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+                sudo cat /root/.ssh/authorized_keys > /tmp/authorized_keys
+                sudo cat /root/.ssh/id_rsa.pub >> /tmp/authorized_keys
+
+                sudo cp -rf /tmp/authorized_keys /root/.ssh/authorized_keys
             fi
         fi
     fi
