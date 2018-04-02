@@ -16,3 +16,8 @@ if [ ! -f ~/.ssh/id_rsa ]; then
   ssh-keygen -q -f ~/.ssh/id_rsa -N ""
   cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 fi
+
+chmod 600 ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/config
+
+ssh -o StrictHostKeyChecking=no ${USER}@${IP} "pwd" < /dev/null
