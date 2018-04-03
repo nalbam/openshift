@@ -114,8 +114,8 @@ build_ssh() {
 
                 cp -rf /tmp/authorized_keys /root/.ssh/authorized_keys
 
+                chmod 700 /root/.ssh
                 chmod 600 /root/.ssh/authorized_keys
-                chmod 600 /root/.ssh/config
             fi
         fi
     fi
