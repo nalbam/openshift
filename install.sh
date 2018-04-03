@@ -7,8 +7,8 @@ export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
 export DOMAIN=${DOMAIN:="nalbam.com"}
 export USERNAME=${USERNAME:="admin"}
 export PASSWORD=${PASSWORD:="password"}
-export VERSION=${VERSION:="v3.7.2"}
-export BRANCH=${BRANCH:="release-3.7"}
+export VERSION=${VERSION:="v3.9.0"}
+export BRANCH=${BRANCH:="release-3.9"}
 export DISK=${DISK:=""}
 
 export METRICS="True"
