@@ -27,7 +27,7 @@ fi
 
 install_dependency() {
     # for docker (rhel)
-    #yum-config-manager --enable rhui-REGION-rhel-server-extras
+    yum-config-manager --enable rhui-REGION-rhel-server-extras
 
     yum repolist | grep epel
     if [ $? -eq 1 ]; then
