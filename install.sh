@@ -25,16 +25,18 @@ if [ "$MEMORY" -lt "8388608" ]; then
 fi
 
 install_dependency() {
-    yum repolist | grep rhui-REGION-rhel-server-extras
-    if [ $? -eq 1 ]; then
-        # for docker (rhel)
-        yum-config-manager --enable rhui-REGION-rhel-server-extras
-    fi
+    # for docker (rhel)
+    #yum-config-manager --enable rhui-REGION-rhel-server-extras
 
     yum repolist | grep epel
     if [ $? -eq 1 ]; then
-        # for pip, zile
         rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
+
+        # for pip, zile
+        yum-config-manager --enable epel
+
+        # for ansible-2.5.0
+        yum-config-manager --enable epel-testing
     fi
 
     yum update -y

@@ -1,0 +1,32 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+
+[OSEv3:vars]
+ansible_user=root
+
+openshift_release=3.9
+openshift_deployment_type=origin
+
+openshift_portal_net=172.30.0.0/16
+
+#osm_cluster_network_cidr=10.128.0.0/14
+#osm_host_subnet_length=9
+
+#localhost likely doesn't meet the minimum requirements
+openshift_disable_check=disk_availability,memory_availability
+
+openshift_public_hostname=console.nalbam.com
+openshift_master_default_subdomain=apps.nalbam.com
+
+#ansible_service_broker_install=False
+
+[masters]
+master.nalbam.com
+
+[etcd]
+master.nalbam.com
+
+[nodes]
+master.nalbam.com openshift_schedulable=true openshift_node_labels="{'region': 'infra', 'zone': 'default'}"
