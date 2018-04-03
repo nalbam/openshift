@@ -4,6 +4,9 @@
 ```
 export DISK=/dev/sdf
 
+export VERSION=v3.7.2
+export BRANCH=release-3.7
+
 curl -s https://raw.githubusercontent.com/nalbam/openshift/master/install.sh | bash
 ```
 
