@@ -2,7 +2,7 @@
 
 export USER=${USER:=$(whoami)}
 
-export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
+export IP="$(ip route get 1.1.1.1 | awk '{print $NF; exit}')"
 
 if [ ! -f ~/.ssh/id_rsa ]; then
   ssh-keygen -q -f ~/.ssh/id_rsa -N ""
