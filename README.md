@@ -7,6 +7,8 @@ export DISK=/dev/sdf
 export VERSION=v3.7.2
 export BRANCH=release-3.7
 
+export DOMAIN=nalbam.com
+
 curl -s https://raw.githubusercontent.com/nalbam/openshift/master/install.sh | bash
 ```
  * https://github.com/openshift/openshift-ansible/tree/release-3.7

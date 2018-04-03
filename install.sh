@@ -2,9 +2,10 @@
 
 export USER=${USER:=$(whoami)}
 
+# Private IP
 export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
 
-export DOMAIN=${DOMAIN:="nalbam.com"}
+export DOMAIN=${DOMAIN:="$(curl -s ipinfo.io/ip).nip.io"}
 export USERNAME=${USERNAME:="admin"}
 export PASSWORD=${PASSWORD:="password"}
 export VERSION=${VERSION:="v3.7.2"}
