@@ -116,6 +116,7 @@ build_ssh() {
 
                 sudo chmod 700 /root/.ssh
                 sudo chmod 600 /root/.ssh/authorized_keys
+                sudo chmod 600 /root/.ssh/id_rsa
             fi
         fi
     fi
