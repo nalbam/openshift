@@ -34,6 +34,7 @@ openshift_deployment_type=origin
 
 short_version=3.7
 
+openshift_version=${VERSION}
 openshift_release=${VERSION}
 openshift_image_tag=${VERSION}
 openshift_pkg_version=${VERSION}
