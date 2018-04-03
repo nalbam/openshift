@@ -4,8 +4,6 @@
 ```
 export DISK=/dev/sdf
 
-export DOMAIN=nalbam.com
-
 curl -s https://raw.githubusercontent.com/nalbam/openshift/master/install.sh | bash
 ```
 
