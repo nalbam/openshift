@@ -8,6 +8,7 @@ export DOMAIN=${DOMAIN:="nalbam.com"}
 export USERNAME=${USERNAME:="admin"}
 export PASSWORD=${PASSWORD:="password"}
 export VERSION=${VERSION:="v3.7.2"}
+export BRANCH=${BRANCH:="release-3.7"}
 export DISK=${DISK:=""}
 
 export METRICS="True"
@@ -49,7 +50,7 @@ install_ansible() {
     [ ! -d openshift-ansible ] && git clone https://github.com/openshift/openshift-ansible.git
 
     pushd openshift-ansible
-    git fetch && git checkout release-3.7
+    git fetch && git checkout ${BRANCH}
     popd
 }
 
