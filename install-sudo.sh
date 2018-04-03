@@ -4,8 +4,8 @@ export USER=${USER:=$(whoami)}
 
 export IP="$(ip route get 8.8.8.8 | awk '{print $NF; exit}')"
 
-export DOMAIN=${DOMAIN:="${IP}.nip.io"}
-export USERNAME=${USERNAME:="${USER}"}
+export DOMAIN=${DOMAIN:="nalbam.com"}
+export USERNAME=${USERNAME:="admin"}
 export PASSWORD=${PASSWORD:="password"}
 export VERSION=${VERSION:="v3.7.2"}
 export DISK=${DISK:=""}
