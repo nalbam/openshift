@@ -26,6 +26,8 @@ if [ "$MEMORY" -lt "8388608" ]; then
 fi
 
 install_dependency() {
+    yum update -y
+
     # for docker (rhel)
     yum-config-manager --enable rhui-REGION-rhel-server-extras
 
@@ -40,7 +42,6 @@ install_dependency() {
         yum-config-manager --enable epel-testing
     fi
 
-    yum update -y
     yum install -y git nano wget zip zile gettext net-tools libffi-devel docker \
                    python-cryptography python-passlib python-devel python-pip pyOpenSSL.x86_64 \
                    openssl-devel httpd-tools java-1.8.0-openjdk-headless NetworkManager \
