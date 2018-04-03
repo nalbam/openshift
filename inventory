@@ -32,7 +32,6 @@ openshift_node_kubelet_args={'pods-per-core':['10']}
 deployment_type=origin
 openshift_deployment_type=origin
 
-openshift_version=${VERSION}
 openshift_release=${VERSION}
 openshift_image_tag=${VERSION}
 openshift_pkg_version=${VERSION}
