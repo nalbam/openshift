@@ -42,7 +42,7 @@ install_dependency() {
         yum-config-manager --enable epel-testing
     fi
 
-    yum install -y git wget zip zile docker gettext net-tools libffi-devel httpd-tools \
+    yum install -y git wget zip zile docker ansible gettext net-tools libffi-devel httpd-tools \
                    python-cryptography python-passlib python-devel python-pip pyOpenSSL.x86_64 \
                    openssl-devel java-1.8.0-openjdk-headless \
                    NetworkManager "@Development Tools"
