@@ -103,7 +103,7 @@ start_service() {
 
 build_ssh() {
     if [ ! -f ~/.ssh/id_rsa ]; then
-        curl -s https://raw.githubusercontent.com/nalbam/openshift/master/ssh-keygen.sh | bash
+        curl -s https://raw.githubusercontent.com/nalbam/openshift/master/bin/ssh-keygen.sh | bash
 
         if [ "${USER}" != "root" ]; then
             if [ ! -f /tmp/authorized_keys ]; then
@@ -128,13 +128,13 @@ build_ssh() {
 }
 
 build_hosts() {
-    curl -s -o /tmp/hosts.tmp https://raw.githubusercontent.com/nalbam/openshift/master/hosts
+    curl -s -o /tmp/hosts.tmp https://raw.githubusercontent.com/nalbam/openshift/master/bin/hosts
     envsubst < /tmp/hosts.tmp > /tmp/hosts
     cp -rf /tmp/hosts /etc/hosts
 }
 
 build_inventory() {
-    curl -s -o /tmp/inventory.tmp https://raw.githubusercontent.com/nalbam/openshift/master/inventory
+    curl -s -o /tmp/inventory.tmp https://raw.githubusercontent.com/nalbam/openshift/master/bin/inventory
     envsubst < /tmp/inventory.tmp > inventory.ini
 
     if [ ! -f inventory.ini ]; then

@@ -1,7 +1,5 @@
 # openshift
 
-* see: https://github.com/nalbam/basecamp/blob/master/openshift.md
-
 ## install 3.7
 ```
 export DISK=/dev/sdf
@@ -11,9 +9,9 @@ export BRANCH=release-3.7
 
 export DOMAIN=nalbam.com
 
-curl -s https://raw.githubusercontent.com/nalbam/openshift/master/install.sh | bash
+curl -s https://raw.githubusercontent.com/nalbam/openshift/master/bin/install.sh | bash
 ```
- * https://github.com/openshift/openshift-ansible/tree/release-3.7
+* https://github.com/openshift/openshift-ansible/tree/release-3.7
 
 ## install 3.9
 ```
@@ -21,18 +19,13 @@ git clone https://github.com/openshift/openshift-ansible
 cd openshift-ansible
 git checkout release-3.9
 
-wget https://raw.githubusercontent.com/nalbam/openshift/master/inventory-local
+wget https://raw.githubusercontent.com/nalbam/openshift/master/bin/inventory-local
 
 sudo ansible-playbook -i inventory-local playbooks/prerequisites.yml
 sudo ansible-playbook -i inventory-local playbooks/deploy_cluster.yml -vvv
 ```
- * https://github.com/openshift/openshift-ansible/tree/release-3.9
- * https://docs.docker.com/storage/storagedriver/device-mapper-driver/
-
-## minishift
-```
-minishift start --vm-driver=virtualbox
-```
+* https://github.com/openshift/openshift-ansible/tree/release-3.9
+* https://docs.docker.com/storage/storagedriver/device-mapper-driver/
 
 ## reference
 * https://github.com/dwmkerr/terraform-aws-openshift/
