@@ -1,5 +1,7 @@
 # openshift
 
+* see: https://github.com/nalbam/basecamp/blob/master/openshift.md
+
 ## install 3.7
 ```
 export DISK=/dev/sdf
