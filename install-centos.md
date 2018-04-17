@@ -42,3 +42,9 @@ oc create route edge --service=frontend \
     --hostname=console.nalbam.com
 ```
 * https://docs.openshift.com/container-platform/3.9/dev_guide/routes.html
+
+## remove
+```
+rm -rf /usr/local/bin/oc /usr/local/bin/openshift
+rm -rf /usr/local/bin/hyperkube /usr/local/bin/kubectl /usr/local/bin/oadm /usr/local/bin/oc /usr/local/bin/openshift
+```
