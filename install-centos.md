@@ -25,15 +25,7 @@ sudo cp -rf hyperkube kubectl oadm oc openshift /usr/local/bin/
 sudo ln -s /usr/local/bin/oc /usr/bin/oc
 sudo ln -s /usr/local/bin/openshift /usr/bin/openshift
 
-oc cluster up --public-hostname=console.nalbam.com --routing-suffix=apps.nalbam.com
-
-oc cluster down
-```
-
-### Running from a rpm
-```
-sudo yum install origin
-sudo openshift start
+oc cluster up
 ```
 
 ## domain

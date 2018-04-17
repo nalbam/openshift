@@ -1,5 +1,20 @@
 # openshift
 
+## basic
+```
+oc cluster up --public-hostname=console.nalbam.com --routing-suffix=apps.nalbam.com
+
+oc login -u system:admin
+
+oc cluster down
+```
+
+## kubectl
+```
+kubectl get deploy,pod,svc,ing,job,cronjobs --all-namespaces
+kubectl get deploy,pod,svc,ing,job,cronjobs -n default
+```
+
 ## source-to-image
 ```
 oc project openshift
