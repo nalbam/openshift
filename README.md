@@ -1,31 +1,48 @@
 # openshift
 
-## install 3.7
+## source-to-image
 ```
-export DISK=/dev/sdf
+oc project openshift
 
-export VERSION=v3.7.2
-export BRANCH=release-3.7
+oc import-image -n openshift openshift/redhat-openjdk-18:1.3 --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:latest --confirm
+oc create -n openshift -f https://raw.githubusercontent.com/nalbam/openshift/master/s2i/openjdk18-basic-s2i.json
 
-export DOMAIN=nalbam.com
-
-curl -s https://raw.githubusercontent.com/nalbam/openshift/master/bin/install.sh | bash
+oc delete template/openjdk8-basic-s2i
 ```
-* https://github.com/openshift/openshift-ansible/tree/release-3.7
+ * https://github.com/openshift/source-to-image
+ * https://github.com/openshift/source-to-image/blob/master/examples/nginx-centos7/README.md
+ * https://github.com/openshift-s2i
 
-## install 3.9
+## import image
 ```
-git clone https://github.com/openshift/openshift-ansible
-cd openshift-ansible
-git checkout release-3.9
-
-wget https://raw.githubusercontent.com/nalbam/openshift/master/bin/inventory-local
-
-sudo ansible-playbook -i inventory-local playbooks/prerequisites.yml
-sudo ansible-playbook -i inventory-local playbooks/deploy_cluster.yml -vvv
+oc import-image -n openshift openshift/sample-web:latest --from=docker.io/nalbam/sample-web:latest --confirm
 ```
-* https://github.com/openshift/openshift-ansible/tree/release-3.9
-* https://docs.docker.com/storage/storagedriver/device-mapper-driver/
+
+## ci/cd
+```
+oc new-project ci
+oc policy add-role-to-user admin developer -n ci
+
+oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus3-template.yaml \
+           -p NEXUS_VERSION=3.9.0 \
+           -p MAX_MEMORY=2Gi
+
+GOGS_HOST="gogs-ci.$(oc get route nexus -o template --template='{{.spec.host}}' | sed "s/nexus-ci.//g")"
+oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-docker/master/openshift/gogs-template.yaml \
+           -p GOGS_VERSION=0.11.43 \
+           -p HOSTNAME=${GOGS_HOST} \
+           -p SKIP_TLS_VERIFY=true
+
+oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml \
+           -p SONARQUBE_VERSION=6.7.2 \
+           -p SONAR_MAX_MEMORY=4Gi
+
+echo $(curl --post302 http://${GOGS_HOST}/user/sign_up \
+  --form user_name=gogs \
+  --form password=gogs \
+  --form retype=gogs \
+  --form email=gogs@gogs.com)
+```
 
 ## reference
 * https://github.com/dwmkerr/terraform-aws-openshift/
