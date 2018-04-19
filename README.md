@@ -50,7 +50,7 @@ oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-do
            -p HOSTNAME=${GOGS_HOST} \
            -p SKIP_TLS_VERIFY=true
 
-# sonarqube
+# sonarqube - https://hub.docker.com/r/openshiftdemos/sonarqube/
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml \
            -p SONARQUBE_VERSION=7.0 \
            -p SONAR_MAX_MEMORY=4Gi
