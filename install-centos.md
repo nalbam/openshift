@@ -2,8 +2,8 @@
 ```
 curl -s https://raw.githubusercontent.com/nalbam/openshift/master/bin/install-master.sh | bash
 
-#edit /etc/sysconfig/docker file and add --insecure-registry 172.30.0.0/16 to the OPTIONS parameter.
-sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/16"' \ 
+vi /etc/sysconfig/docker
+INSECURE_REGISTRY='--selinux-enabled --insecure-registry 172.30.0.0/16 --insecure-registry registry.access.redhat.com'
 
 sudo systemctl daemon-reload
 sudo systemctl enable docker
