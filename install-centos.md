@@ -2,10 +2,6 @@
 ```
 curl -s https://raw.githubusercontent.com/nalbam/openshift/master/bin/install-master.sh | bash
 
-sudo yum install centos-release-openshift-origin
-sudo yum install wget git net-tools bind-utils iptables-services bridge-utils bash-completion origin-clients 
-sudo yum install docker python-rhsm-certificates
-
 #edit /etc/sysconfig/docker file and add --insecure-registry 172.30.0.0/16 to the OPTIONS parameter.
 sed -i '/OPTIONS=.*/c\OPTIONS="--selinux-enabled --insecure-registry 172.30.0.0/16"' \ 
 
@@ -15,7 +11,7 @@ sudo systemctl restart docker
 ```
 * https://wiki.centos.org/SpecialInterestGroup/PaaS/OpenShift-Quickstart
 
-### OC CLUSTER
+### OC CLUSTER (All-in-One)
 ```
 wget $(curl -s https://api.github.com/repos/openshift/origin/releases/latest | grep browser_download_url | grep linux | grep server | cut -d'"' -f4)
 tar -xvzf openshift-origin-server-*-linux-64bit.tar.gz
@@ -26,6 +22,11 @@ sudo ln -s /usr/local/bin/oc /usr/bin/oc
 sudo ln -s /usr/local/bin/openshift /usr/bin/openshift
 
 oc cluster up
+```
+
+### yum origin
+```
+sudo yum install -y centos-release-openshift-origin origin-clients 
 ```
 
 ## domain
@@ -45,6 +46,6 @@ oc create route edge --service=frontend \
 
 ## remove
 ```
-rm -rf /usr/local/bin/oc /usr/local/bin/openshift
-rm -rf /usr/local/bin/hyperkube /usr/local/bin/kubectl /usr/local/bin/oadm /usr/local/bin/oc /usr/local/bin/openshift
+sudo rm -rf /usr/bin/oc /usr/bin/openshift
+sudo rm -rf /usr/local/bin/hyperkube /usr/local/bin/kubectl /usr/local/bin/oadm /usr/local/bin/oc /usr/local/bin/openshift
 ```
