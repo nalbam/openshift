@@ -33,23 +33,26 @@ oc delete template/openjdk8-basic-s2i
 oc import-image -n openshift openshift/sample-web:latest --from=docker.io/nalbam/sample-web:latest --confirm
 ```
 
-## ci/cd
+## devops
 ```
-oc new-project ci
-oc policy add-role-to-user admin developer -n ci
+oc new-project devops
+oc policy add-role-to-user admin developer -n devops
 
+# nexus3 - https://hub.docker.com/r/sonatype/nexus3/
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus3-template.yaml \
-           -p NEXUS_VERSION=3.9.0 \
+           -p NEXUS_VERSION=latest \
            -p MAX_MEMORY=2Gi
 
-GOGS_HOST="gogs-ci.$(oc get route nexus -o template --template='{{.spec.host}}' | sed "s/nexus-ci.//g")"
+# gogs - https://hub.docker.com/r/openshiftdemos/gogs/
+GOGS_HOST="gogs-devops.$(oc get route nexus -o template --template='{{.spec.host}}' | sed 's/nexus-devops.//g')"
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-docker/master/openshift/gogs-template.yaml \
-           -p GOGS_VERSION=0.11.43 \
+           -p GOGS_VERSION=latest \
            -p HOSTNAME=${GOGS_HOST} \
            -p SKIP_TLS_VERIFY=true
 
+# sonarqube
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml \
-           -p SONARQUBE_VERSION=6.7.2 \
+           -p SONARQUBE_VERSION=7.0 \
            -p SONAR_MAX_MEMORY=4Gi
 
 echo $(curl --post302 http://${GOGS_HOST}/user/sign_up \
