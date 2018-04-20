@@ -6,14 +6,19 @@ oc cluster up --public-hostname=console.nalbam.com --routing-suffix=apps.nalbam.
 
 oc login -u system:admin
 
+oc policy add-role-to-user admin developer -n default
+oc policy add-role-to-user admin developer -n kube-system
+
 oc cluster down
 ```
+* https://github.com/openshift/origin
 
 ## kubectl
 ```
 kubectl get deploy,pod,svc,ing,job,cronjobs --all-namespaces
 kubectl get deploy,pod,svc,ing,job,cronjobs -n default
 ```
+* https://github.com/nalbam/kubernetes
 
 ## source-to-image
 ```
@@ -24,9 +29,9 @@ oc create -n openshift -f https://raw.githubusercontent.com/nalbam/openshift/mas
 
 oc delete template/openjdk8-basic-s2i
 ```
- * https://github.com/openshift/source-to-image
- * https://github.com/openshift/source-to-image/blob/master/examples/nginx-centos7/README.md
- * https://github.com/openshift-s2i
+* https://github.com/openshift/source-to-image
+* https://github.com/openshift/source-to-image/blob/master/examples/nginx-centos7/README.md
+* https://github.com/openshift-s2i
 
 ## import image
 ```
@@ -50,17 +55,37 @@ oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-do
            -p HOSTNAME=${GOGS_HOST} \
            -p SKIP_TLS_VERIFY=true
 
-# sonarqube - https://hub.docker.com/r/openshiftdemos/sonarqube/
-oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml \
-           -p SONARQUBE_VERSION=7.0 \
-           -p SONAR_MAX_MEMORY=4Gi
-
 echo $(curl --post302 http://${GOGS_HOST}/user/sign_up \
   --form user_name=gogs \
   --form password=gogs \
   --form retype=gogs \
   --form email=gogs@gogs.com)
+
+# sonarqube - https://hub.docker.com/r/openshiftdemos/sonarqube/
+oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml \
+           -p SONARQUBE_VERSION=7.0 \
+           -p SONAR_MAX_MEMORY=4Gi
+
+oc delete project devops
 ```
+* https://github.com/openshiftdemos/
+
+## spinnaker
+```
+oc new-project demo
+oc policy add-role-to-user admin developer -n demo
+
+git clone git@github.com:nalbam/charts.git
+
+cd charts
+
+helm install --name demo spinnaker --namespace=demo --timeout 3600
+
+helm delete --purge demo
+
+oc delete project devops
+```
+* https://github.com/nalbam/charts
 
 ## reference
 * https://github.com/dwmkerr/terraform-aws-openshift/
@@ -70,7 +95,6 @@ echo $(curl --post302 http://${GOGS_HOST}/user/sign_up \
 * https://blog.novatec-gmbh.de/getting-started-minishift-openshift-origin-one-vm/
 
 ## examples
-* https://github.com/openshiftdemos/
 * https://github.com/openshift/origin/tree/master/examples/
 * https://github.com/debianmaster/openshift-examples/
 
