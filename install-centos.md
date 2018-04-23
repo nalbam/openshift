@@ -24,12 +24,12 @@ sudo ln -s /usr/local/bin/openshift /usr/bin/openshift
 oc cluster up --public-hostname=console.nalbam.com --routing-suffix=apps.nalbam.com
 ```
 
-### yum origin
+### yum origin (x)
 ```
 sudo yum install -y centos-release-openshift-origin origin-clients 
 ```
 
-## domain
+## domain (x)
 ```
 oc expose svc/frontend --hostname=console.nalbam.com
 
