@@ -46,7 +46,11 @@ objects:
         containers:
         - env:
           - name: PROFILE
-            value: default
+            value: ${PROFILE}
+          - name: CONFIG_SERVER_HOST
+            value: ${CONFIG_SERVER_HOST}
+          - name: CONFIG_SERVER_PORT
+            value: ${CONFIG_SERVER_PORT}
           image: ' '
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -61,13 +65,13 @@ objects:
             timeoutSeconds: 1
           name: ${SERVICE_NAME}
           ports:
-          - containerPort: 8080
+          - containerPort: ${SERVICE_PORT}
             protocol: TCP
           readinessProbe:
             failureThreshold: 3
             httpGet:
               path: /
-              port: 8080
+              port: ${SERVICE_PORT}
               scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 10
@@ -108,10 +112,10 @@ objects:
       app: ${SERVICE_NAME}
   spec:
     ports:
-    - name: 8080-tcp
-      port: 8080
+    - name: ${SERVICE_PORT}-tcp
+      port: ${SERVICE_PORT}
       protocol: TCP
-      targetPort: 8080
+      targetPort: ${SERVICE_PORT}
     selector:
       deploymentconfig: ${SERVICE_NAME}
     sessionAffinity: None
@@ -124,7 +128,7 @@ objects:
       app: ${SERVICE_NAME}
   spec:
     port:
-      targetPort: 8080-tcp
+      targetPort: ${SERVICE_PORT}-tcp
     to:
       kind: Service
       name: ${SERVICE_NAME}
@@ -134,10 +138,14 @@ parameters:
   name: SERVICE_NAME
   required: true
   value: sample-spring
-- displayName: Service version
+- displayName: Service Version
   name: SERVICE_VERSION
   required: true
   value: alpine
+- displayName: Service Port
+  name: SERVICE_PORT
+  required: true
+  value: 8080
 - displayName: Max Memory
   name: MAX_MEMORY
   required: true
@@ -145,7 +153,7 @@ parameters:
 - displayName: PROFILE
   name: PROFILE
   required: true
-  value: 1Gi
+  value: default
 - displayName: CONFIG_SERVER_HOST
   name: CONFIG_SERVER_HOST
   required: true
