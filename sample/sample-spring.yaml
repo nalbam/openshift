@@ -1,31 +1,31 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: nexus3-template
+  template: ${SERVICE_NAME}-template
 metadata:
-  name: nexus3
+  name: ${SERVICE_NAME}
   annotations:
-    description: Sonatype Nexus 3 template
-    tags: ci,nexus
+    description: Sample Spring
+    tags: sample
 objects:
 - apiVersion: v1
   kind: ImageStream
   metadata:
+    name: ${SERVICE_NAME}
     labels:
       app: ${SERVICE_NAME}
-    name: ${SERVICE_NAME}
   spec:
     tags:
     - from:
         kind: DockerImage
-        name: docker.io/sonatype/nexus3:${NEXUS_VERSION}
-      name: ${NEXUS_VERSION}
+        name: docker.io/nalbam/${SERVICE_NAME}:${SERVICE_VERSION}
+      name: 0.0.1
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
+    name: ${SERVICE_NAME}
     labels:
       app: ${SERVICE_NAME}
-    name: ${SERVICE_NAME}
   spec:
     replicas: 1
     selector:
@@ -37,14 +37,6 @@ objects:
         maxUnavailable: 0
         timeoutSeconds: 600
         updatePeriodSeconds: 1
-        post:
-          failurePolicy: Abort
-          execNewPod:
-            containerName: ${SERVICE_NAME}
-            command:
-              - "/bin/bash"
-              - "-c"
-              - "curl -o /tmp/nexus-functions -s https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/scripts/nexus-functions; source /tmp/nexus-functions; add_nexus3_redhat_repos admin admin123 http://${SERVICE_NAME}:8081"
       type: Rolling
     template:
       metadata:
@@ -53,8 +45,8 @@ objects:
       spec:
         containers:
         - env:
-          - name: CONTEXT_PATH
-            value: /
+          - name: PROFILE
+            value: default
           image: ' '
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -69,13 +61,13 @@ objects:
             timeoutSeconds: 1
           name: ${SERVICE_NAME}
           ports:
-          - containerPort: 8081
+          - containerPort: 8080
             protocol: TCP
           readinessProbe:
             failureThreshold: 3
             httpGet:
               path: /
-              port: 8081
+              port: 8080
               scheme: HTTP
             initialDelaySeconds: 30
             periodSeconds: 10
@@ -88,7 +80,7 @@ objects:
               memory: 512Mi
           terminationMessagePath: /dev/termination-log
           volumeMounts:
-          - mountPath: /nexus-data
+          - mountPath: /data
             name: ${SERVICE_NAME}-data
         dnsPolicy: ClusterFirst
         restartPolicy: Always
@@ -106,20 +98,20 @@ objects:
         - ${SERVICE_NAME}
         from:
           kind: ImageStreamTag
-          name: ${SERVICE_NAME}:${NEXUS_VERSION}
+          name: ${SERVICE_NAME}:${SERVICE_VERSION}
       type: ImageChange
 - apiVersion: v1
   kind: Service
   metadata:
+    name: ${SERVICE_NAME}
     labels:
       app: ${SERVICE_NAME}
-    name: ${SERVICE_NAME}
   spec:
     ports:
-    - name: 8081-tcp
-      port: 8081
+    - name: 8080-tcp
+      port: 8080
       protocol: TCP
-      targetPort: 8081
+      targetPort: 8080
     selector:
       deploymentconfig: ${SERVICE_NAME}
     sessionAffinity: None
@@ -127,27 +119,38 @@ objects:
 - apiVersion: v1
   kind: Route
   metadata:
+    name: ${SERVICE_NAME}
     labels:
       app: ${SERVICE_NAME}
-    name: ${SERVICE_NAME}
   spec:
     port:
-      targetPort: 8081-tcp
+      targetPort: 8080-tcp
     to:
       kind: Service
       name: ${SERVICE_NAME}
       weight: 100
 parameters:
-- displayName: Sonatype Nexus Service Name
+- displayName: Service Name
   name: SERVICE_NAME
   required: true
-  value: nexus
-- displayName: Sonatype Nexus version
-  name: NEXUS_VERSION
+  value: sample-spring
+- displayName: Service version
+  name: SERVICE_VERSION
   required: true
-  value: 3.6.0
-- description: Max memory allocated to the Nexus pod
-  displayName: Max Memory
+  value: alpine
+- displayName: Max Memory
   name: MAX_MEMORY
   required: true
   value: 1Gi
+- displayName: PROFILE
+  name: PROFILE
+  required: true
+  value: 1Gi
+- displayName: CONFIG_SERVER_HOST
+  name: CONFIG_SERVER_HOST
+  required: true
+  value: config-server
+- displayName: CONFIG_SERVER_PORT
+  name: CONFIG_SERVER_PORT
+  required: true
+  value: 8888
