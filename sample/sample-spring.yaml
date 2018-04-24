@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Template
 labels:
-  template: ${SERVICE_NAME}-template
+  template: sample-spring-template
 metadata:
-  name: ${SERVICE_NAME}
+  name: sample-spring
   annotations:
-    description: Sample Spring
-    tags: sample
+    description: Sample Spring Template
+    tags: sample,spring
 objects:
 - apiVersion: v1
   kind: ImageStream
@@ -19,7 +19,7 @@ objects:
     - from:
         kind: DockerImage
         name: docker.io/nalbam/${SERVICE_NAME}:${SERVICE_VERSION}
-      name: 0.0.1
+      name: ${SERVICE_VERSION}
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
@@ -37,6 +37,13 @@ objects:
         maxUnavailable: 0
         timeoutSeconds: 600
         updatePeriodSeconds: 1
+        post:
+          failurePolicy: Abort
+          execNewPod:
+            containerName: ${SERVICE_NAME}
+            command:
+              - echo
+              - ok
       type: Rolling
     template:
       metadata:
@@ -51,7 +58,7 @@ objects:
             value: ${CONFIG_SERVER_HOST}
           - name: CONFIG_SERVER_PORT
             value: ${CONFIG_SERVER_PORT}
-          image: ' '
+          image: " "
           imagePullPolicy: IfNotPresent
           livenessProbe:
             exec:
@@ -82,7 +89,7 @@ objects:
               memory: ${MAX_MEMORY}
             requests:
               memory: 512Mi
-          terminationMessagePath: /dev/termination-log
+          terminationMessagePath: /data/termination-log
           volumeMounts:
           - mountPath: /data
             name: ${SERVICE_NAME}-data
