@@ -29,7 +29,7 @@ oc import-image -n openshift openshift/redhat-openjdk-18:1.3 --from=registry.acc
 
 oc create -n openshift -f https://raw.githubusercontent.com/nalbam/openshift/master/s2i/openjdk18-basic-s2i.json
 
-oc delete template/openjdk8-basic-s2i
+oc delete template/openjdk18-basic-s2i
 ```
 * https://github.com/openshift/source-to-image
 * https://github.com/openshift/source-to-image/blob/master/examples/nginx-centos7/README.md
