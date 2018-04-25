@@ -7,6 +7,7 @@ oc cluster up --public-hostname=console.nalbam.com --routing-suffix=apps.nalbam.
 oc login -u system:admin
 
 oc policy add-role-to-user admin developer -n default
+oc policy add-role-to-user admin developer -n openshift
 oc policy add-role-to-user admin developer -n kube-system
 
 oc cluster down
