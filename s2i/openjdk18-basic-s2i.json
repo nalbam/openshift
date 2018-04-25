@@ -13,10 +13,10 @@
       "template.openshift.io/documentation-url": "https://access.redhat.com/documentation/en/",
       "template.openshift.io/support-url": "https://access.redhat.com/"
     },
-    "name": "${APPLICATION_NAME}"
+    "name": "openjdk18-basic-s2i"
   },
   "labels": {
-    "template": "${APPLICATION_NAME}",
+    "template": "openjdk18-basic-s2i",
     "xpaas": "1.0.0"
   },
   "message": "A new java application has been created in your project.",
@@ -78,6 +78,34 @@
       "name": "IMAGE_STREAM_NAMESPACE",
       "value": "openshift",
       "required": true
+    },
+    {
+      "name": "MEMORY_LIMIT",
+      "displayName": "Memory Limit",
+      "required": true,
+      "description": "Maximum amount of memory the container can use.",
+      "value": "512Mi"
+    },
+    {
+      "name": "PROFILE",
+      "displayName": "Application Profile",
+      "required": true,
+      "description": "Spring Boot Application Profile.",
+      "value": "dev"
+    },
+    {
+      "name": "CONFIG_SERVER_HOST",
+      "displayName": "Cloud Config Host",
+      "required": true,
+      "description": "Spring Boot Cloud Config Server Host.",
+      "value": "config-server"
+    },
+    {
+      "name": "CONFIG_SERVER_Port",
+      "displayName": "Cloud Config Port",
+      "required": true,
+      "description": "Spring Boot Cloud Config Server Port.",
+      "value": "8888"
     }
   ],
   "objects": [
@@ -244,6 +272,18 @@
                 "image": "${APPLICATION_NAME}",
                 "imagePullPolicy": "Always",
                 "env": [
+                  {
+                    "name": "PROFILE",
+                    "value": "${PROFILE}"
+                  },
+                  {
+                    "name": "CONFIG_SERVER_HOST",
+                    "value": "${CONFIG_SERVER_HOST}"
+                  },
+                  {
+                    "name": "CONFIG_SERVER_PORT",
+                    "value": "${CONFIG_SERVER_PORT}"
+                  }
                 ],
                 "ports": [
                   {
@@ -261,7 +301,28 @@
                     "containerPort": 8443,
                     "protocol": "TCP"
                   }
-                ]
+                ],
+                "readinessProbe": {
+                  "timeoutSeconds": 3,
+                  "initialDelaySeconds": 3,
+                  "httpGet": {
+                    "path": "/",
+                    "port": 8080
+                  }
+                },
+                "livenessProbe": {
+                  "timeoutSeconds": 3,
+                  "initialDelaySeconds": 30,
+                  "httpGet": {
+                    "path": "/",
+                    "port": 8080
+                  }
+                },
+                "resources": {
+                  "limits": {
+                    "memory": "${MEMORY_LIMIT}"
+                  }
+                }
               }
             ]
           }
