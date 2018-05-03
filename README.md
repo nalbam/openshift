@@ -72,23 +72,6 @@ oc delete project devops
 ```
 * https://github.com/openshiftdemos/
 
-## spinnaker
-```
-oc new-project demo
-oc policy add-role-to-user admin developer -n demo
-
-git clone git@github.com:nalbam/charts.git
-
-cd charts
-
-helm install --name demo spinnaker --namespace=demo --timeout 3600
-
-helm delete --purge demo
-
-oc delete project devops
-```
-* https://github.com/nalbam/charts
-
 ## reference
 * https://github.com/dwmkerr/terraform-aws-openshift/
 
