@@ -40,22 +40,24 @@ oc delete template/openjdk18-basic-s2i
 oc import-image -n openshift openshift/sample-web:latest --from=docker.io/nalbam/sample-web:latest --confirm
 ```
 
-## devops
+## ops
 ```
-oc new-project devops
-oc policy add-role-to-user admin developer -n devops
+oc new-project ops
+oc policy add-role-to-user admin admin -n ops
 
 # nexus3 - https://hub.docker.com/r/sonatype/nexus3/
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus3-template.yaml \
            -p NEXUS_VERSION=latest \
-           -p MAX_MEMORY=2Gi
+           -p MAX_MEMORY=2Gi \
+           -n ops
 
 # gogs - https://hub.docker.com/r/openshiftdemos/gogs/
-GOGS_HOST="gogs-devops.$(oc get route nexus -o template --template='{{.spec.host}}' | sed 's/nexus-devops.//g')"
+GOGS_HOST="gogs-ops.$(oc get route nexus -o template --template='{{.spec.host}}' | sed 's/nexus-ops.//g')"
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-docker/master/openshift/gogs-template.yaml \
            -p GOGS_VERSION=latest \
            -p HOSTNAME=${GOGS_HOST} \
-           -p SKIP_TLS_VERIFY=true
+           -p SKIP_TLS_VERIFY=true \
+           -n ops
 
 echo $(curl --post302 http://${GOGS_HOST}/user/sign_up \
   --form user_name=gogs \
@@ -66,9 +68,10 @@ echo $(curl --post302 http://${GOGS_HOST}/user/sign_up \
 # sonarqube - https://hub.docker.com/r/openshiftdemos/sonarqube/
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml \
            -p SONARQUBE_VERSION=7.0 \
-           -p SONAR_MAX_MEMORY=4Gi
+           -p SONAR_MAX_MEMORY=4Gi \
+           -n ops
 
-oc delete project devops
+oc delete project ops
 ```
 * https://github.com/openshiftdemos/
 
