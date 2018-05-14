@@ -43,7 +43,7 @@ oc import-image -n openshift openshift/sample-web:latest --from=docker.io/nalbam
 ## ops
 ```
 oc new-project ops
-oc policy add-role-to-user admin admin -n ops
+oc policy add-role-to-user admin developer -n ops
 
 # nexus3 - https://hub.docker.com/r/sonatype/nexus3/
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus3-template.yaml \
