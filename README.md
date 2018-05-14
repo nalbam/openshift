@@ -51,8 +51,14 @@ oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexu
            -p MAX_MEMORY=2Gi \
            -n ops
 
+# sonarqube - https://hub.docker.com/r/openshiftdemos/sonarqube/
+oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml \
+           -p SONARQUBE_VERSION=7.0 \
+           -p SONAR_MAX_MEMORY=4Gi \
+           -n ops
+
 # gogs - https://hub.docker.com/r/openshiftdemos/gogs/
-GOGS_HOST="gogs-ops.$(oc get route nexus -o template --template='{{.spec.host}}' | sed 's/nexus-ops.//g')"
+GOGS_HOST="gogs-ops.$(oc get route nexus -o template --template='{{.spec.host}}' -n ops | sed 's/nexus-ops.//g')"
 oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-docker/master/openshift/gogs-template.yaml \
            -p GOGS_VERSION=latest \
            -p HOSTNAME=${GOGS_HOST} \
@@ -64,12 +70,6 @@ echo $(curl --post302 http://${GOGS_HOST}/user/sign_up \
   --form password=gogs \
   --form retype=gogs \
   --form email=gogs@gogs.com)
-
-# sonarqube - https://hub.docker.com/r/openshiftdemos/sonarqube/
-oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml \
-           -p SONARQUBE_VERSION=7.0 \
-           -p SONAR_MAX_MEMORY=4Gi \
-           -n ops
 
 oc delete project ops
 ```
