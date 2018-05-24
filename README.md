@@ -25,9 +25,10 @@ kubectl get deploy,pod,svc,ing,job,cronjobs -n default
 ```
 oc project openshift
 
-oc import-image openshift/redhat-openjdk-18:1.3 -n openshift \
+oc import-image openshift/openjdk-18:1.3 \
                 --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:latest \
-                --confirm
+                --confirm \
+                -n ops
 
 oc create -f https://raw.githubusercontent.com/nalbam/openshift/master/s2i/openjdk18-basic-s2i.json \
           -n ops
