@@ -1,7 +1,7 @@
 # openshift
 
 ## basic
-```
+```bash
 oc cluster up --public-hostname=console.nalbam.com --routing-suffix=apps.nalbam.com
 
 oc login -u system:admin
@@ -15,37 +15,40 @@ oc cluster down
 * https://github.com/openshift/origin
 
 ## kubectl
-```
+```bash
 kubectl get deploy,pod,svc,ing,job,cronjobs --all-namespaces
 kubectl get deploy,pod,svc,ing,job,cronjobs -n default
 ```
 * https://github.com/nalbam/kubernetes
 
-## source-to-image
-```
+## openjdk18
+```bash
 oc project openshift
 
-oc import-image openshift/openjdk-18:1.3 \
-                --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift:latest \
-                --confirm \
-                -n ops
+oc import-image openjdk18 --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift --confirm
 
-oc create -f https://raw.githubusercontent.com/nalbam/openshift/master/s2i/openjdk18-basic-s2i.json \
-          -n ops
-
-oc delete template/openjdk18-basic-s2i
+# template
+oc create -f https://raw.githubusercontent.com/nalbam/sample-spring/master/openshift/templates/pipeline.json
+oc delete template/sample-spring-pipeline
 ```
+* https://github.com/openshift-s2i
 * https://github.com/openshift/source-to-image
 * https://github.com/openshift/source-to-image/blob/master/examples/nginx-centos7/README.md
-* https://github.com/openshift-s2i
+* https://access.redhat.com/containers/?tab=overview#/registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
 
-## import image
+## prometheus
+```bash
+oc project openshift
+
+# prometheus
+oc import-image prometheus --from=registry.access.redhat.com/openshift3/prometheus --confirm
+
 ```
-oc import-image -n openshift openshift/sample-web:latest --from=docker.io/nalbam/sample-web:latest --confirm
-```
+* https://github.com/openshift/origin/tree/master/examples/prometheus
+* https://access.redhat.com/containers/?start=40#/registry.access.redhat.com/openshift3/prometheus
 
 ## ops
-```
+```bash
 oc new-project ops
 oc policy add-role-to-user admin developer -n ops
 
