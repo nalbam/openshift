@@ -43,6 +43,8 @@ oc project openshift
 # prometheus
 oc import-image prometheus --from=registry.access.redhat.com/openshift3/prometheus --confirm
 
+oc new-app -f https://raw.githubusercontent.com/openshift/origin/master/examples/prometheus/prometheus.yaml
+
 ```
 * https://github.com/openshift/origin/tree/master/examples/prometheus
 * https://access.redhat.com/containers/?start=40#/registry.access.redhat.com/openshift3/prometheus
