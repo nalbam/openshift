@@ -9,7 +9,7 @@ echo "GIT_SECRET   ${env.SOURCE_REPOSITORY_SECRET}"
 echo "JENKINS_URL  ${env.JENKINS_URL}"
 echo "SLACK_URL    ${env.SLACK_WEBHOOK_URL}"
 
-node('maven') {
+node() {
   def app = "${env.APPLICATION_NAME}"
   def ver = "1.0.0"
 
@@ -21,64 +21,22 @@ node('maven') {
   def url = "${jenkins}/${job}/detail/ops-${env.APPLICATION_NAME}-pipeline/${env.BUILD_NUMBER}/pipeline/"
   echo "PIPELINE ${url}"
 
-  def mvnCmd = "mvn -s .m2/settings.xml"
-
-  // https://github.com/openshift/jenkins/blob/master/slave-maven/contrib/settings.xml
-  sh "sed -i 's|<!-- ### configured mirrors ### -->|<mirror><id>mirror</id><url>${env.MAVEN_MIRROR_URL}</url><mirrorOf>*</mirrorOf></mirror>|' ~/.m2/settings.xml"
-
   stage('Checkout') {
     if (env.SOURCE_REPOSITORY_SECRET) {
       git(url: git_url, branch: git_ref, credentialsId: "ops-${env.SOURCE_REPOSITORY_SECRET}")
     } else {
       git(url: git_url, branch: git_ref)
     }
-    def pom = readMavenPom(file: 'pom.xml')
     def rev = sh(script: "git rev-parse --short=6 HEAD", returnStdout: true)
     if (git_ref == 'master') {
-      ver = "${pom.version}-${rev}"
+      ver = "${ver}-${rev}"
     } else {
-      ver = "${pom.version}-SNAPSHOT"
+      ver = "${ver}-SNAPSHOT"
     }
     echo "VERSION ${pom.version}"
-    pom.version = "${ver}"
-    echo "VERSION ${pom.version}"
-    writeMavenPom(model: pom)
-  }
-  stage('Build') {
-    try {
-      timeout(time: 60, unit: 'MINUTES') {
-        sh "${mvnCmd} package -DskipTests=true"
-      }
-    } catch (e) {
-      notify("danger", "Build Failed: ${app}-${ver} <${url}|#${env.BUILD_NUMBER}>")
-      throw e
-    }
-  }
-  stage('Unit Tests') {
-    try {
-      timeout(time: 15, unit: 'MINUTES') {
-        sh "${mvnCmd} test"
-      }
-    } catch (e) {
-      notify("danger", "Unit Test Failed: ${app}-${ver} <${url}|#${env.BUILD_NUMBER}>")
-      throw e
-    }
-  }
-  stage('Code Analysis') {
-    sh "${mvnCmd} sonar:sonar -Dsonar.host.url=${env.SONAR_HOST_URL} -DskipTests=true"
-  }
-  stage('Release') {
-    try {
-      timeout(time: 15, unit: 'MINUTES') {
-        sh "${mvnCmd} deploy -DskipTests=true"
-      }
-    } catch (e) {
-      notify("danger", "Deploy Failed: ${app}-${ver} <${url}|#${env.BUILD_NUMBER}>")
-      throw e
-    }
   }
   stage('Build Image') {
-    openshiftBuild(namespace: 'ops', buildConfig: app, showBuildLogs: 'true', env: [[name: 'VERSION', value: "${ver}"]])
+    openshiftBuild(namespace: 'ops', buildConfig: app, showBuildLogs: 'true')
     openshiftTag(namespace: 'ops', sourceStream: app, sourceTag: 'latest', destinationNamespace: 'ops', destinationStream: app, destinationTag: ver)
     notify("good", "Build Success: ${app}-${ver} <${url}|#${env.BUILD_NUMBER}>")
   }
