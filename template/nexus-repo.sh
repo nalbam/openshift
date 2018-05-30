@@ -74,10 +74,10 @@ function add_nexus3_repos() {
   #add_nexus3_repo redhat-ga https://maven.repository.redhat.com/ga/ ${_NEXUS_USER} ${_NEXUS_PWD} ${_NEXUS_URL}
   #add_nexus3_repo redhat-ea https://maven.repository.redhat.com/earlyaccess/all/ ${_NEXUS_USER} ${_NEXUS_PWD} ${_NEXUS_URL}
   #add_nexus3_repo redhat-tp https://maven.repository.redhat.com/techpreview/all/ ${_NEXUS_USER} ${_NEXUS_PWD} ${_NEXUS_URL}
-  #add_nexus3_repo jboss-ce https://repository.jboss.org/nexus/content/groups/public/ ${_NEXUS_USER} ${_NEXUS_PWD} ${_NEXUS_URL}
 
+  add_nexus3_repo jboss https://repository.jboss.org/nexus/content/groups/public/ ${_NEXUS_USER} ${_NEXUS_PWD} ${_NEXUS_URL}
   add_nexus3_repo jcenter https://jcenter.bintray.com/ ${_NEXUS_USER} ${_NEXUS_PWD} ${_NEXUS_URL}
   add_nexus3_repo jitpack https://jitpack.io/ ${_NEXUS_USER} ${_NEXUS_PWD} ${_NEXUS_URL}
 
-  add_nexus3_group_repo maven-central,maven-releases,maven-snapshots,jcenter,jitpack maven-all-public ${_NEXUS_USER} ${_NEXUS_PWD} ${_NEXUS_URL}
+  add_nexus3_group_repo maven-central,maven-releases,maven-snapshots,jboss,jcenter,jitpack maven-all-public ${_NEXUS_USER} ${_NEXUS_PWD} ${_NEXUS_URL}
 }
