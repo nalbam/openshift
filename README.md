@@ -57,20 +57,22 @@ oc new-project ops
 oc policy add-role-to-user admin developer -n ops
 
 # nexus3 - https://hub.docker.com/r/sonatype/nexus3/
-oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/nexus3-template.yaml \
+oc new-app -f https://raw.githubusercontent.com/nalbam/openshift/master/template/nexus3.yaml \
            -p NEXUS_VERSION=3.12.0 \
+           -p VOLUME_CAPACITY=50Gi \
            -p MAX_MEMORY=2Gi \
            -n ops
 
 # sonarqube - https://hub.docker.com/r/openshiftdemos/sonarqube/
-oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/sonarqube-openshift-docker/master/sonarqube-template.yaml \
+oc new-app -f https://raw.githubusercontent.com/nalbam/openshift/master/template/sonarqube.yaml \
            -p SONARQUBE_VERSION=7.0 \
+           -p SONAR_VOLUME_CAPACITY=2Gi \
            -p SONAR_MAX_MEMORY=4Gi \
            -n ops
 
 # gogs - https://hub.docker.com/r/openshiftdemos/gogs/
 GOGS_HOST="gogs-ops.$(oc get route nexus -o template --template='{{.spec.host}}' -n ops | sed 's/nexus-ops.//g')"
-oc new-app -f https://raw.githubusercontent.com/OpenShiftDemos/gogs-openshift-docker/master/openshift/gogs-template.yaml \
+oc new-app -f https://raw.githubusercontent.com/nalbam/openshift/master/template/gogs.yaml \
            -p GOGS_VERSION=latest \
            -p HOSTNAME=${GOGS_HOST} \
            -p SKIP_TLS_VERIFY=true \
