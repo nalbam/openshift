@@ -156,7 +156,7 @@ parameters:
 - displayName: Sonatype Nexus version
   name: NEXUS_VERSION
   required: true
-  value: 3.6.0
+  value: 3.12.0
 - description: Volume space available for Nexus data
   displayName: Volume Capacity
   name: VOLUME_CAPACITY
@@ -166,4 +166,4 @@ parameters:
   displayName: Max Memory
   name: MAX_MEMORY
   required: true
-  value: 1Gi
+  value: 2Gi
