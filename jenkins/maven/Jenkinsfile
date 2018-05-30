@@ -85,7 +85,7 @@ node('maven') {
   stage('Deploy DEV') {
     openshiftTag(namespace: 'ops', sourceStream: app, sourceTag: ver, destinationNamespace: 'dev', destinationStream: app, destinationTag: 'latest')
     openshiftDeploy(namespace: 'dev', deploymentConfig: app)
-    openshiftScale(namespace: 'dev', deploymentConfig: app, replicaCount: '1')
+    //openshiftScale(namespace: 'dev', deploymentConfig: app, replicaCount: '1')
   }
   stage('Proceed QA') {
     notify("#439FE0", "Proceed QA?: ${app}-${ver} <${url}|#${env.BUILD_NUMBER}>")
@@ -96,7 +96,7 @@ node('maven') {
   stage('Deploy QA') {
     openshiftTag(namespace: 'ops', sourceStream: app, sourceTag: ver, destinationNamespace: 'qa', destinationStream: app, destinationTag: 'latest')
     openshiftDeploy(namespace: 'qa', deploymentConfig: app)
-    openshiftScale(namespace: 'qa', deploymentConfig: app, replicaCount: '1')
+    //openshiftScale(namespace: 'qa', deploymentConfig: app, replicaCount: '1')
   }
 }
 
