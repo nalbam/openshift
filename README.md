@@ -23,9 +23,11 @@ kubectl get deploy,pod,svc,ing,job,cronjobs -n default
 
 ## openjdk18
 ```bash
-oc project openshift
+oc import-image angular --from=docker.io/nalbam/s2i-angular --confirm -n ops
+oc import-image spring --from=docker.io/nalbam/s2i-spring --confirm -n ops
+oc import-image tomcat --from=docker.io/nalbam/s2i-tomcat --confirm -n ops
 
-oc import-image openjdk18 --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift --confirm
+oc import-image openjdk18 --from=registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift --confirm -n ops
 
 # template
 oc create -f https://raw.githubusercontent.com/nalbam/sample-spring/master/openshift/templates/pipeline.json
