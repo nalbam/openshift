@@ -44,7 +44,7 @@ objects:
             command:
               - "/bin/bash"
               - "-c"
-              - "curl -o /tmp/nexus-functions -s https://raw.githubusercontent.com/OpenShiftDemos/nexus/master/scripts/nexus-functions; source /tmp/nexus-functions; add_nexus3_redhat_repos admin admin123 http://${SERVICE_NAME}:8081"
+              - "curl -o /tmp/nexus-functions -s https://raw.githubusercontent.com/nalbam/openshift/master/template/nexus-functions.sh; source /tmp/nexus-functions; add_nexus3_redhat_repos admin admin123 http://${SERVICE_NAME}:8081"
       type: Rolling
     template:
       metadata:
@@ -89,14 +89,15 @@ objects:
           terminationMessagePath: /dev/termination-log
           volumeMounts:
           - mountPath: /nexus-data
-            name: ${SERVICE_NAME}-data
+            name: nexus-data
         dnsPolicy: ClusterFirst
         restartPolicy: Always
         securityContext: {}
         terminationGracePeriodSeconds: 30
         volumes:
-        - name: ${SERVICE_NAME}-data
-          emptyDir: {}
+        - name: nexus-data
+          persistentVolumeClaim:
+            claimName: nexus-data
     test: false
     triggers:
     - type: ConfigChange
@@ -108,6 +109,16 @@ objects:
           kind: ImageStreamTag
           name: ${SERVICE_NAME}:${NEXUS_VERSION}
       type: ImageChange
+- apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: nexus-data
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    resources:
+      requests:
+        storage: ${VOLUME_CAPACITY}
 - apiVersion: v1
   kind: Service
   metadata:
@@ -146,6 +157,11 @@ parameters:
   name: NEXUS_VERSION
   required: true
   value: 3.6.0
+- description: Volume space available for Nexus data
+  displayName: Volume Capacity
+  name: VOLUME_CAPACITY
+  required: true
+  value: 50Gi
 - description: Max memory allocated to the Nexus pod
   displayName: Max Memory
   name: MAX_MEMORY
