@@ -21,9 +21,8 @@ kubectl get deploy,pod,svc,ing,job,cronjobs -n default
 ```
 * https://github.com/nalbam/kubernetes
 
-## openjdk18
+## s2i
 ```bash
-oc import-image angular --from=docker.io/nalbam/s2i-angular --confirm -n ops
 oc import-image spring --from=docker.io/nalbam/s2i-spring --confirm -n ops
 oc import-image tomcat --from=docker.io/nalbam/s2i-tomcat --confirm -n ops
 
@@ -37,19 +36,6 @@ oc delete template/sample-spring-pipeline
 * https://github.com/openshift/source-to-image
 * https://github.com/openshift/source-to-image/blob/master/examples/nginx-centos7/README.md
 * https://access.redhat.com/containers/?tab=overview#/registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift
-
-## prometheus
-```bash
-oc project openshift
-
-# prometheus
-oc import-image prometheus --from=registry.access.redhat.com/openshift3/prometheus --confirm
-
-oc new-app -f https://raw.githubusercontent.com/openshift/origin/master/examples/prometheus/prometheus.yaml
-
-```
-* https://github.com/openshift/origin/tree/master/examples/prometheus
-* https://access.redhat.com/containers/?start=40#/registry.access.redhat.com/openshift3/prometheus
 
 ## ops
 ```bash
@@ -87,6 +73,19 @@ echo $(curl --post302 http://${GOGS_HOST}/user/sign_up \
 oc delete project ops
 ```
 * https://github.com/openshiftdemos/
+
+## prometheus
+```bash
+oc project openshift
+
+# prometheus
+oc import-image prometheus --from=registry.access.redhat.com/openshift3/prometheus --confirm
+
+oc new-app -f https://raw.githubusercontent.com/openshift/origin/master/examples/prometheus/prometheus.yaml
+
+```
+* https://github.com/openshift/origin/tree/master/examples/prometheus
+* https://access.redhat.com/containers/?start=40#/registry.access.redhat.com/openshift3/prometheus
 
 ## reference
 * https://github.com/dwmkerr/terraform-aws-openshift/
