@@ -6,9 +6,9 @@ oc cluster up --public-hostname=console.nalbam.com --routing-suffix=apps.nalbam.
 
 oc login -u system:admin
 
-oc policy add-role-to-user admin developer -n default
-oc policy add-role-to-user admin developer -n openshift
-oc policy add-role-to-user admin developer -n kube-system
+oc policy add-role-to-user admin admin -n default
+oc policy add-role-to-user admin admin -n openshift
+oc policy add-role-to-user admin admin -n kube-system
 
 oc cluster down
 ```
@@ -20,6 +20,17 @@ kubectl get deploy,pod,svc,ing,job,cronjobs --all-namespaces
 kubectl get deploy,pod,svc,ing,job,cronjobs -n default
 ```
 * https://github.com/nalbam/kubernetes
+
+### project
+```bash
+oc new-project ops
+oc new-project dev
+oc new-project qa
+
+oc policy add-role-to-user admin admin -n ops
+oc policy add-role-to-user admin admin -n dev
+oc policy add-role-to-user admin admin -n qa
+```
 
 ## s2i
 ```bash
@@ -40,7 +51,7 @@ oc delete template/sample-spring-pipeline
 ## ops
 ```bash
 oc new-project ops
-oc policy add-role-to-user admin developer -n ops
+oc policy add-role-to-user admin admin -n ops
 
 # nexus3 - https://hub.docker.com/r/sonatype/nexus3/
 oc new-app -f https://raw.githubusercontent.com/nalbam/openshift/master/template/nexus3.yaml \
