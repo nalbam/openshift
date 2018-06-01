@@ -50,8 +50,11 @@ oc delete template/sample-spring-pipeline
 
 ## ops
 ```bash
-oc new-project ops
-oc policy add-role-to-user admin admin -n ops
+# jenkins
+oc new-app jenkins-ephemeral -n ops
+
+oc policy add-role-to-user edit system:serviceaccount:ops:jenkins -n dev
+oc policy add-role-to-user edit system:serviceaccount:ops:jenkins -n qa
 
 # nexus3 - https://hub.docker.com/r/sonatype/nexus3/
 oc new-app -f https://raw.githubusercontent.com/nalbam/openshift/master/template/nexus3.yaml \
@@ -80,17 +83,13 @@ echo $(curl --post302 http://${GOGS_HOST}/user/sign_up \
   --form password=gogs \
   --form retype=gogs \
   --form email=gogs@gogs.com)
-
-oc delete project ops
 ```
 * https://github.com/openshiftdemos/
 
 ## prometheus
 ```bash
-oc project openshift
-
 # prometheus
-oc import-image prometheus --from=registry.access.redhat.com/openshift3/prometheus --confirm
+oc import-image prometheus --from=registry.access.redhat.com/openshift3/prometheus --confirm -n ops
 
 oc new-app -f https://raw.githubusercontent.com/openshift/origin/master/examples/prometheus/prometheus.yaml
 
