@@ -1,4 +1,4 @@
-def version, mvnCmd = "mvn -s configuration/cicd-settings-nexus3.xml"
+def version, maven = "mvn -s configuration/cicd-settings-nexus3.xml"
 
 pipeline {
   agent {
@@ -12,25 +12,25 @@ pipeline {
             def pom = readMavenPom file: 'pom.xml'
             version = pom.version
         }
-        sh "${mvnCmd} install -DskipTests=true"
+        sh "${maven} install -DskipTests=true"
       }
     }
     stage('Test') {
       steps {
-        sh "${mvnCmd} test"
+        sh "${maven} test"
         step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
       }
     }
     stage('Code Analysis') {
       steps {
         script {
-          sh "${mvnCmd} sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -DskipTests=true"
+          sh "${maven} sonar:sonar -Dsonar.host.url=http://sonarqube:9000 -DskipTests=true"
         }
       }
     }
     stage('Archive App') {
       steps {
-        sh "${mvnCmd} deploy -DskipTests=true -P nexus3"
+        sh "${maven} deploy -DskipTests=true -P nexus3"
       }
     }
     stage('Create Image Builder') {
