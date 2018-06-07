@@ -152,7 +152,7 @@ parameters:
 - displayName: Sonatype Nexus Service Name
   name: SERVICE_NAME
   required: true
-  value: nexus
+  value: "nexus"
 - displayName: Sonatype Nexus version
   name: NEXUS_VERSION
   required: true
@@ -161,9 +161,9 @@ parameters:
   displayName: Volume Capacity
   name: VOLUME_CAPACITY
   required: true
-  value: 50Gi
+  value: "50Gi"
 - description: Max memory allocated to the Nexus pod
   displayName: Max Memory
   name: MAX_MEMORY
   required: true
-  value: 2Gi
+  value: "2Gi"

@@ -155,8 +155,8 @@ parameters:
   displayName: SonarQube Volume Capacity
   name: SONAR_VOLUME_CAPACITY
   required: true
-  value: 2Gi
+  value: "2Gi"
 - displayName: SonarQube Max Memory
   name: SONAR_MAX_MEMORY
   required: true
-  value: 4Gi
+  value: "4Gi"
