@@ -44,7 +44,7 @@ objects:
             command:
               - "/bin/bash"
               - "-c"
-              - "curl -o /tmp/nexus-repo -s https://raw.githubusercontent.com/nalbam/openshift/master/template/nexus-repo.sh; source /tmp/nexus-repo; add_nexus3_repos admin admin123 http://${SERVICE_NAME}:8081"
+              - "curl -o /tmp/nexus-repo -s https://raw.githubusercontent.com/nalbam/openshift/master/template/nexus-repo.sh; source /tmp/nexus-repo; add_nexus3_repos admin admin123 http://${SERVICE_NAME}:8081 || echo 'ok'"
       type: Rolling
     template:
       metadata:
