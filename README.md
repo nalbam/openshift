@@ -32,6 +32,12 @@ oc policy add-role-to-user admin admin -n dev
 oc policy add-role-to-user admin admin -n qa
 ```
 
+## sample
+```bash
+oc import-image sample-node --from=docker.io/nalbam/sample-node --confirm -n dev
+oc new-app sample-node -n dev
+```
+
 ## s2i
 ```bash
 oc import-image spring --from=docker.io/nalbam/s2i-spring --confirm -n ops
@@ -93,6 +99,9 @@ oc import-image prometheus --from=registry.access.redhat.com/openshift3/promethe
 
 oc new-app -f https://raw.githubusercontent.com/openshift/origin/master/examples/prometheus/prometheus.yaml
 
+oc create -f https://raw.githubusercontent.com/openshift/origin/master/examples/prometheus/node-exporter.yaml -n kube-system
+oc adm policy add-scc-to-user -z prometheus-node-exporter -n kube-system hostaccess
+oc annotate ns kube-system openshift.io/node-selector= --overwrite
 ```
 * https://github.com/openshift/origin/tree/master/examples/prometheus
 * https://access.redhat.com/containers/?start=40#/registry.access.redhat.com/openshift3/prometheus
